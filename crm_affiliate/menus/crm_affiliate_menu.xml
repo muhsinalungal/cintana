@@ -1,0 +1,129 @@
+<odoo>
+  <data>
+
+    <record id="action_affiliate_your_pipeline" model="ir.actions.server">
+      <field name="name">Crm: My Pipeline</field>
+      <field name="model_id" ref="crm.model_crm_team"/>
+      <field name="state">code</field>
+      <field name="code">action = model.action_your_affiliate_pipeline()</field>
+    </record>
+
+    <menuitem id="affiliate_crm_menu_root" name="Affiliate CRM" action="action_affiliate_your_pipeline" web_icon="crm,static/description/icon.png" groups="sales_team.group_sale_salesman,sales_team.group_sale_manager" sequence="6"/>
+
+    <menuitem id="affiliate_crm_menu_pipeline" name="Pipeline" parent="affiliate_crm_menu_root" sequence="1"/>
+
+    <record id="action_affiliate_partner" model="ir.actions.act_window">
+      <field name="name">Affiliates</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="context">{
+        'default_customer':0,
+        'default_supplier':0,
+        'default_affiliate':1,
+        'search_default_affiliates': 1}</field>
+      <field name="search_view_id" ref="base.view_res_partner_filter"/>
+    </record>
+
+    <menuitem id="res_partner_menu_crm_affiliates" name="Affiliates" parent="affiliate_crm_menu_root" action="action_affiliate_partner" sequence="2"/>
+
+    <record id="crm.crm_lead_all_leads" model="ir.actions.act_window">
+      <field name="context">{
+        'default_type':'lead',
+        'search_default_type': 'lead',
+        'needaction_menu_ref': 'crm.menu_crm_opportunities',
+        'search_default_to_process':1,
+        'default_crm_lead_type': 'sale_lead',
+        'search_default_assigned_to_me': 1
+      }
+      </field>
+    </record>
+
+    <record id="affiliate_crm_lead_all_leads" model="ir.actions.act_window">
+      <field name="name">Leads</field>
+      <field name="res_model">crm.lead</field>
+      <field name="view_mode">tree,kanban,graph,pivot,calendar,form</field>
+      <field name="domain">['|', ('type','=','lead'), ('type','=',False)]</field>
+      <field name="view_ids" eval="[
+        (5, 0, 0),
+        (0, 0, {'view_mode': 'tree', 'view_id': ref('crm.crm_case_tree_view_leads')}),
+        (0, 0, {'view_mode': 'kanban', 'view_id': ref('crm.view_crm_lead_kanban')})]"/>
+      <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
+      <field name="context">{
+        'default_type':'lead',
+        'search_default_type': 'lead',
+        'needaction_menu_ref': 'crm.menu_crm_opportunities',
+        'search_default_to_process':1,
+        'default_crm_lead_type': 'affiliate_lead',
+        'search_default_affiliate_assigned_to_me': 1
+      }
+      </field>
+    </record>
+
+    <menuitem id="menu_affiliate_crm_leads" name="Leads" parent="affiliate_crm_menu_pipeline" sequence="1" action="affiliate_crm_lead_all_leads"  groups="crm.group_use_lead"/>
+    <menuitem id="menu_affiliate_crm_opportunities" action="action_affiliate_your_pipeline" name="Pipeline" parent="affiliate_crm_menu_pipeline" sequence="5"/>
+
+    <menuitem id="affiliate_crm_menu_report" name="Reporting" parent="affiliate_crm_menu_root" sequence="20" groups="sales_team.group_sale_manager"/>
+    <menuitem id="affiliate_crm_opportunity_report_menu_lead" name="Leads" parent="affiliate_crm_menu_report" action="crm.crm_opportunity_report_action_lead" groups="crm.group_use_lead" sequence="1"/>
+    <menuitem id="affiliate_crm_opportunity_menu_report" name="Pipeline" parent="affiliate_crm_menu_report" action="crm.crm_opportunity_report_action" sequence="5"/>
+    <menuitem id="affiliate_crm_activity_menu_report" name="Activities" groups="sales_team.group_sale_manager" parent="affiliate_crm_menu_report" action="crm.crm_activity_report_action" sequence="6"/>
+    
+    <record id="sales_team.crm_team_salesteams_act" model="ir.actions.act_window">
+      <field name="domain">[('team_type','=','sales_team')]</field>
+      <field name="context">{
+        'search_default_my_favorites': 1,
+        'default_team_type': 'sales_team'
+      }</field>
+    </record>
+    <record id="affiliates_team_salesteams_act" model="ir.actions.act_window">
+      <field name="name">Affiliates Channels</field>
+      <field name="res_model">crm.team</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">kanban,form</field>
+      <field name="domain">[('team_type','=','affiliates_team')]</field>
+      <field name="context">{'search_default_my_favorites': 1}</field>
+      <field name="view_id" ref="sales_team.crm_team_salesteams_search"/>
+    </record>
+    <menuitem id="affiliate_crm_sales_team_menu_report" name="Affiliate Channels" parent="affiliate_crm_menu_report" action="affiliates_team_salesteams_act" sequence="10"/>
+    
+    <menuitem id="affiliate_crm_menu_config" name="Configuration" parent="affiliate_crm_menu_root" sequence="25" groups="sales_team.group_sale_manager"/>
+    <menuitem id="menu_affiliate_crm_config_opportunity" name="Opportunities" parent="affiliate_crm_menu_config" sequence="1" groups="sales_team.group_sale_manager"/>
+
+    <record id="sales_team.sales_team_config_action" model="ir.actions.act_window">
+      <field name="domain">[('team_type','=','sales_team')]</field>
+      <field name="context">{'default_team_type':'sales_team'}</field>
+    </record>
+    <record id="affiliate_team_config_action" model="ir.actions.act_window">
+      <field name="name">Sales Channels</field>
+      <field name="res_model">crm.team</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('team_type','=','affiliates_team')]</field>
+      <field name="context">{'default_team_type':'affiliates_team'}</field>
+      <field name="view_id" ref="sales_team.crm_team_salesteams_search"/>
+    </record>
+    <menuitem id="affiliate_crm_team_config" name="Affiliate Channels" parent="affiliate_crm_menu_config" action="affiliate_team_config_action" sequence="5"/>
+    <menuitem id="crm_team_menu_config_activity_types" name="Activity Types" parent="affiliate_crm_menu_config" action="sales_team.mail_activity_type_action_config_sales" sequence="10"/>
+
+    <menuitem id="menu_affiliate_crm_config_lead" name="Leads &amp; Opportunities" parent="affiliate_crm_menu_config" sequence="15" groups="sales_team.group_sale_manager"/>
+
+    <record id="crm.crm_stage_action" model="ir.actions.act_window">
+        <field name="domain">[('stage_type','=','sales_crm_stage')]</field>
+        <field name="context">{'default_stage_type':'sales_crm_stage'}</field>
+    </record>
+    <record id="affiliate_crm_stage_action" model="ir.actions.act_window">
+        <field name="name">Stages</field>
+        <field name="res_model">crm.stage</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="crm.crm_stage_tree"/>
+        <field name="domain">[('stage_type','=','affiliates_crm_stage')]</field>
+        <field name="context">{'default_stage_type':'affiliates_crm_stage'}</field>
+    </record>
+    <menuitem id="menu_affiliate_crm_lead_stage_act" name="Stages" sequence="0" action="affiliate_crm_stage_action" parent="menu_affiliate_crm_config_lead" groups="base.group_no_one"/>
+
+    <menuitem id="menu_affiliate_crm_lead_categ" name="Lead Tags" action="crm.crm_lead_tag_action" parent="menu_affiliate_crm_config_lead" sequence="1"/>
+    <menuitem id="menu_affiliate_crm_lost_reason" action="crm.crm_lost_reason_action" parent="menu_affiliate_crm_config_lead" sequence="6"/>
+        
+  </data>
+</odoo>

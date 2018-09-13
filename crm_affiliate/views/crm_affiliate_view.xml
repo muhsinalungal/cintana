@@ -1,0 +1,62 @@
+<odoo>
+  <data>
+    <record id="view_crm_affiliate_opportunities_filter_inherit" model="ir.ui.view">
+      <field name="name">crm.affiliate.opportunities.filter.inherit</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+      <field name="arch" type="xml">
+        <data>
+          <filter name="assigned_to_me" position="attributes">
+            <attribute name="domain">[('user_id', '=', uid), ('crm_lead_type', '=', 'sale_lead')]</attribute>
+          </filter>
+          <filter name="assigned_to_me" position="after">
+            <filter string="My Affiliate Pipeline" name="affiliate_assigned_to_me" domain="[('user_id', '=', uid), ('crm_lead_type', '=', 'affiliate_lead')]" help="Affiliate opportunities that are assigned to me"/>
+          </filter>
+        </data>
+      </field>
+    </record>
+
+    <record id="view_crm_affiliate_leads_filter_inherit" model="ir.ui.view">
+      <field name="name">crm.affiliate.leads.filter.inherit</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+      <field name="arch" type="xml">
+        <data>
+          <filter name="assigned_to_me" position="attributes">
+            <attribute name="domain">[('user_id', '=', uid), ('crm_lead_type', '=', 'sale_lead')]</attribute>
+          </filter>
+          <filter name="assigned_to_me" position="after">
+            <filter string="My Affiliate Leads" name="affiliate_assigned_to_me" domain="[('user_id', '=', uid), ('crm_lead_type', '=', 'affiliate_lead')]" help="Affiliate leads that are assigned to me"/>
+          </filter>
+        </data>
+      </field>
+    </record>
+
+    <record id="filter_affiliate_res_partner_inherit" model="ir.ui.view">
+      <field name="name">affiliate.res.partner.filter.inherit</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_res_partner_filter"/>
+      <field name="arch" type="xml">
+        <data>
+          <filter name="supplier" position="after">
+            <filter name="affiliates" string="Affiliates" domain="[('affiliate','=',1)]"/>
+          </filter>
+        </data>
+      </field>
+    </record>
+
+    <record id="view_affiliate_res_partner_inherit" model="ir.ui.view">
+      <field name="name">affiliate.res.partner.inherit</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+        <data>
+          <field name="category_id" position="after">
+            <field name="affiliate" string="Is a Affiliate"/>
+          </field>
+        </data>
+      </field>
+    </record>
+    
+  </data>
+</odoo>
