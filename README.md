@@ -1,2 +1,0 @@
-# cintana
-test for cintana
