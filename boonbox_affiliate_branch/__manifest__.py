@@ -20,6 +20,9 @@
         'views/affiliate_branch_view.xml',
         'views/store_mapping_view.xml',
         'views/store_type_view.xml',
+        'views/postal_code_view.xml',
+        'views/country_view.xml',
+        'views/country_state_view.xml',
     ],
 
 }

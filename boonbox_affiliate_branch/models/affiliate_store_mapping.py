@@ -18,5 +18,5 @@ class StoreMapping(models.Model):
     # delivery_type = fields.Many2one('Delivery Type', required=True)
     is_partial_payment = fields.Boolean('Partial Payment Allowed')
     invoicing_restriction = fields.Boolean('Invoicing Restriction')
-    # covered_pincode = fields.Many2many('Covered PIN Codes')
+    covered_pincode = fields.Many2many('postal.code', string="Covered PIN Codes")
     # tat_details = fields.Many2one('TAT Details')

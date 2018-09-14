@@ -42,7 +42,7 @@
                         <group>
                             <field name="is_partial_payment" widget="boolean"/>
                             <field name="invoicing_restriction" widget="boolean"/>
-                            <!--<field name="covered_pincode" widget="many2many_tags"/>-->
+                            <field name="covered_pincode" widget="many2many_tags"/>
                             <!--<field name="tat_details"/>-->
                         </group>
                     </group>

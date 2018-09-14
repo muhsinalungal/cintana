@@ -124,6 +124,6 @@
 
     <menuitem id="menu_affiliate_crm_lead_categ" name="Lead Tags" action="crm.crm_lead_tag_action" parent="menu_affiliate_crm_config_lead" sequence="1"/>
     <menuitem id="menu_affiliate_crm_lost_reason" action="crm.crm_lost_reason_action" parent="menu_affiliate_crm_config_lead" sequence="6"/>
-        
+
   </data>
 </odoo>

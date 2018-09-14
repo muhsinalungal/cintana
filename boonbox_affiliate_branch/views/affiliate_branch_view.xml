@@ -14,7 +14,7 @@
         </record>
 
         <record model="ir.ui.view" id="affiliate_branch_form">
-            <field name="name">Affiliate Branch list</field>
+            <field name="name">Affiliate Branch Form</field>
             <field name="model">affiliate.branch</field>
             <field name="arch" type="xml">
                 <form string="Branch">
